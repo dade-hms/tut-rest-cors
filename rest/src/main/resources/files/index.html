@@ -1,0 +1,112 @@
+<html>
+<body>
+<H1>hello</H1>
+<script>
+	const baseurl = "http://restapi.lvh.me:8080";
+	function downloadEmployees() {
+		document.getElementById("response").innerHTML = "In progress";
+		const xhr = new XMLHttpRequest();
+		const url = baseurl;
+
+		xhr.open("GET", url+ "/employees");
+		xhr.onreadystatechange = function(){
+			document.getElementById("response").innerHTML = xhr.responseText;
+		};
+		xhr.send();
+	}
+
+
+	function createEmployee() {
+		document.getElementById("response").innerHTML = "In progress";
+		const xhr = new XMLHttpRequest();
+		const url = baseurl;
+
+
+		xhr.open("POST", url+ "/employees");
+		xhr.setRequestHeader('Content-type', 'application/json');
+		xhr.onreadystatechange = function(){
+			document.getElementById("response").innerHTML = xhr.responseText;
+		};
+		xhr.send(JSON.stringify(
+			{
+				name: "Julien",
+				role: "Manager"
+			}
+		));
+	}
+
+
+
+	function createEmployee() {
+		document.getElementById("response").innerHTML = "In progress";
+		const xhr = new XMLHttpRequest();
+		const url = baseurl;
+
+
+		xhr.open("POST", url+ "/employees");
+		xhr.setRequestHeader('Content-type', 'application/json');
+		xhr.onreadystatechange = function(){
+			document.getElementById("response").innerHTML = xhr.responseText;
+		};
+		xhr.send(JSON.stringify(
+			{
+				name: "Julien",
+				role: "Manager"
+			}
+		));
+	}
+
+
+	function updateEmployee() {
+		document.getElementById("response").innerHTML = "In progress";
+		const xhr = new XMLHttpRequest();
+		const url = baseurl;
+
+
+		xhr.open("PUT", url+ "/employees/2");
+		xhr.setRequestHeader('Content-type', 'application/json');
+		xhr.onreadystatechange = function(){
+			document.getElementById("response").innerHTML = xhr.responseText;
+		};
+		xhr.send(JSON.stringify(
+			{
+				name: "Frodon",
+				role: "Hero"
+			}
+		));
+	}
+
+
+	function deleteEmployee() {
+		document.getElementById("response").innerHTML = "In progress";
+		const xhr = new XMLHttpRequest();
+		const url = baseurl;
+
+
+		xhr.open("DELETE", url+ "/employees/1");
+		xhr.setRequestHeader('Content-type', 'application/json');
+		xhr.onreadystatechange = function(){
+			document.getElementById("response").innerHTML = xhr.responseText;
+		};
+		xhr.send();
+	}
+
+
+</script>
+
+<button onclick="createEmployee();">Create a new employee</button> (POST)
+<br/>
+<button onclick="downloadEmployees();">Download list of employees</button> (GET)
+<br/>
+<button onclick="updateEmployee();">Change Frodo</button> (PUT)
+<br/>
+<button onclick="deleteEmployee();">Delete employee Bilbo</button> (DELETE)
+<br/>
+
+<br/>
+Result of last http request:
+<div id="response" style="white-space:pre-wrap;font-family: Consolas; border: 1px solid black; width: 500px; min-height:100px">
+
+</div>
+</body>
+</html>
