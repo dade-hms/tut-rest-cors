@@ -46,7 +46,7 @@
 		xhr.open("GET", url+ "/employees/2");
 		xhr.setRequestHeader('Content-type', 'application/json');
 		xhr.setRequestHeader('myheader', 'some-value');
-		//xhr.withCredentials = true;
+		xhr.withCredentials = true;
 		xhr.onreadystatechange = function(){
 			document.getElementById("response").innerHTML =
 				"Headers:\n" +
