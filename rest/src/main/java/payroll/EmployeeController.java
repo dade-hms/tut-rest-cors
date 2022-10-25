@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,7 @@ class EmployeeController {
 
 	// tag::get-aggregate-root[]
 	@GetMapping("/employees")
+	@CrossOrigin
 	CollectionModel<EntityModel<Employee>> all() {
 
 		List<EntityModel<Employee>> employees = repository.findAll().stream()
