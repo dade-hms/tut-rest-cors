@@ -2,11 +2,14 @@ package payroll;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
 // tag::hateoas-imports[]
 // end::hateoas-imports[]
@@ -37,7 +43,7 @@ class EmployeeController {
 
 		List<EntityModel<Employee>> employees = repository.findAll().stream()
 				.map(employee -> EntityModel.of(employee,
-						linkTo(methodOn(EmployeeController.class).one(employee.getId())).withSelfRel(),
+						linkTo(methodOn(EmployeeController.class).one(employee.getId(), null)).withSelfRel(),
 						linkTo(methodOn(EmployeeController.class).all()).withRel("employees")))
 				.collect(Collectors.toList());
 
@@ -55,14 +61,27 @@ class EmployeeController {
 
 	// tag::get-single-item[]
 	@GetMapping("/employees/{id}")
-	EntityModel<Employee> one(@PathVariable Long id) {
+	@CrossOrigin(origins = "http://myweb.lvh.me:8080"
+				 ,maxAge = 5L
+				 //,allowedHeaders = {"myheader","content-type"}
+				 //,exposedHeaders = "abcde"
+				 //,allowCredentials = "true"
+				 )
+	EntityModel<Employee> one(@PathVariable Long id, HttpServletResponse response) {
 
 		Employee employee = repository.findById(id) //
 				.orElseThrow(() -> new EmployeeNotFoundException(id));
+		Cookie cookie = new Cookie("lastCall", ""+ Instant.now());
+		cookie.setMaxAge(7*24*60*60);
+		cookie.setPath("/");
+		response.addCookie(cookie);
+		response.addHeader("abcde", "some content here");
+		response.addHeader("ghijkl", "some non visible content here");
 
 		return EntityModel.of(employee, //
-				linkTo(methodOn(EmployeeController.class).one(id)).withSelfRel(),
-				linkTo(methodOn(EmployeeController.class).all()).withRel("employees"));
+				linkTo(methodOn(EmployeeController.class).one(id, null)).withSelfRel(),
+				linkTo(methodOn(EmployeeController.class).all()).withRel("employees"))
+				;
 	}
 	// end::get-single-item[]
 

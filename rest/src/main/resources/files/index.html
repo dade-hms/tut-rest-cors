@@ -37,16 +37,22 @@
 
 
 
-	function createEmployee() {
+	function getSpecificEmployee() {
 		document.getElementById("response").innerHTML = "In progress";
 		const xhr = new XMLHttpRequest();
 		const url = baseurl;
 
 
-		xhr.open("POST", url+ "/employees");
+		xhr.open("GET", url+ "/employees/2");
 		xhr.setRequestHeader('Content-type', 'application/json');
+		xhr.setRequestHeader('myheader', 'some-value');
+		//xhr.withCredentials = true;
 		xhr.onreadystatechange = function(){
-			document.getElementById("response").innerHTML = xhr.responseText;
+			document.getElementById("response").innerHTML =
+				"Headers:\n" +
+				xhr.getAllResponseHeaders() +
+				"\n content: \n" +
+				xhr.responseText;
 		};
 		xhr.send(JSON.stringify(
 			{
@@ -101,6 +107,8 @@
 <button onclick="updateEmployee();">Change Frodo</button> (PUT)
 <br/>
 <button onclick="deleteEmployee();">Delete employee Bilbo</button> (DELETE)
+<br/>
+<button onclick="getSpecificEmployee();">Get Frodo with additional headers</button> (GET)
 <br/>
 
 <br/>
