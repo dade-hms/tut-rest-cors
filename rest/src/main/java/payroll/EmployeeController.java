@@ -46,6 +46,7 @@ class EmployeeController {
 	// end::get-aggregate-root[]
 
 	@PostMapping("/employees")
+	@CrossOrigin(origins={"http://myweb.lvh.me:8080"})
 	Employee newEmployee(@RequestBody Employee newEmployee) {
 		return repository.save(newEmployee);
 	}
@@ -66,6 +67,7 @@ class EmployeeController {
 	// end::get-single-item[]
 
 	@PutMapping("/employees/{id}")
+	@CrossOrigin(origins={"*"})
 	Employee replaceEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
 
 		return repository.findById(id) //
@@ -81,6 +83,7 @@ class EmployeeController {
 	}
 
 	@DeleteMapping("/employees/{id}")
+	@CrossOrigin()
 	void deleteEmployee(@PathVariable Long id) {
 		repository.deleteById(id);
 	}
