@@ -38,7 +38,6 @@ class EmployeeController {
 
 	// tag::get-aggregate-root[]
 	@GetMapping("/employees")
-	@CrossOrigin
 	CollectionModel<EntityModel<Employee>> all() {
 
 		List<EntityModel<Employee>> employees = repository.findAll().stream()
@@ -52,7 +51,6 @@ class EmployeeController {
 	// end::get-aggregate-root[]
 
 	@PostMapping("/employees")
-	@CrossOrigin(origins={"http://myweb.lvh.me:8080"})
 	Employee newEmployee(@RequestBody Employee newEmployee) {
 		return repository.save(newEmployee);
 	}
@@ -61,12 +59,6 @@ class EmployeeController {
 
 	// tag::get-single-item[]
 	@GetMapping("/employees/{id}")
-	@CrossOrigin(origins = "http://myweb.lvh.me:8080"
-				 ,maxAge = 5L
-				 //,allowedHeaders = {"myheader","content-type"}
-				 //,exposedHeaders = "abcde"
-				 //,allowCredentials = "true"
-				 )
 	EntityModel<Employee> one(@PathVariable Long id, HttpServletResponse response) {
 
 		Employee employee = repository.findById(id) //
@@ -86,7 +78,6 @@ class EmployeeController {
 	// end::get-single-item[]
 
 	@PutMapping("/employees/{id}")
-	@CrossOrigin(origins={"*"})
 	Employee replaceEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
 
 		return repository.findById(id) //
@@ -102,7 +93,6 @@ class EmployeeController {
 	}
 
 	@DeleteMapping("/employees/{id}")
-	@CrossOrigin()
 	void deleteEmployee(@PathVariable Long id) {
 		repository.deleteById(id);
 	}
